@@ -1,6 +1,7 @@
 package com.geekbrains.hibernate.myhomework;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -12,6 +13,12 @@ public class Product {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "cost")
+    private Integer cost;
+
+    @OneToMany(mappedBy = "product")
+    private List<Basket> basketList;
 
     public Integer getId() {
         return id;
@@ -27,5 +34,20 @@ public class Product {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getCost() {
+        return cost;
+    }
+
+    public void setCost(Integer cost) {
+        this.cost = cost;
+    }
+
+    public List<Basket> getBasketList() {
+        return basketList;
+    }
+
+    public Product() {
     }
 }

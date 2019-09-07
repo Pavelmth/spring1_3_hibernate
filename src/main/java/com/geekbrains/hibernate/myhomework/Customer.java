@@ -16,9 +16,8 @@ public class Customer {
     @Column(name = "name")
     private String name;
 
-//    @OneToMany(mappedBy = "customer")
-//    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-//    private List<Product> products;
+    @OneToMany(mappedBy = "customer")
+    private List<Basket> basketList;
 
     public Integer getId() {
         return id;
@@ -36,20 +35,10 @@ public class Customer {
         this.name = name;
     }
 
-//    public List<Product> getProducts() {
-//        return products;
-//    }
-//
-//    public void setProducts(List<Product> products) {
-//        this.products = products;
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "Customer{" +
-//                "id=" + id +
-//                ", name='" + name + '\'' +
-//                ", products=" + products +
-//                '}';
-//    }
+    public List<Basket> getBasketList() {
+        return basketList;
+    }
+
+    public Customer() {
+    }
 }
