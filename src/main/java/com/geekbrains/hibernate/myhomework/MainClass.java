@@ -31,7 +31,9 @@ CREATE SCHEMA hiber;
 SET search_path TO hiber;
 DROP TABLE if EXISTS customers; CREATE TABLE customers (id serial PRIMARY KEY, name VARCHAR(255));
 DROP TABLE if EXISTS products; CREATE TABLE products (id serial PRIMARY KEY, name VARCHAR(255), cost int, date DATE NOT NULL DEFAULT CURRENT_DATE);
-DROP TABLE if EXISTS baskets; CREATE TABLE baskets (id_customer RESTRICTED
+DROP TABLE if EXISTS baskets; CREATE TABLE baskets (id serial PRIMARY KEY, customer_id int, product_id int, FOREIGN KEY (customer_id) REFERENCES customers (id), FOREIGN KEY (product_id) REFERENCES products (id));
+INSERT INTO baskets(customer_id, product_id) VALUES (2, 1);
+INSERT INTO baskets(customer_id, product_id) VALUES (2, 2);
 */
 public class MainClass {
     public static void main(String[] args) {
@@ -107,7 +109,7 @@ public class MainClass {
 
                     for (Product o:
                             products) {
-                        System.out.println(o.getName());
+                        System.out.println(o.getName() + " " + o.getCost());
                     }
                     session.getTransaction().commit();
                 }
@@ -151,10 +153,12 @@ public class MainClass {
                     Customer customer = session.createQuery("SELECT c FROM Customer c WHERE c.name = :name", Customer.class)
                             .setParameter("name", name)
                             .getSingleResult();
+                    System.out.println(customer.getName());
+
                     if(customer!=null){
                         for (Basket o :
                              customer.getBasketList()) {
-                            products.add(session.createQuery("SELECT p FROM Product p WHERE p.customer_id = :id", Product.class)
+                            products.add(session.createQuery("SELECT p FROM Product p WHERE p.product_id = :id", Product.class)
                                     .setParameter("id", o.getProductId())
                                     .getSingleResult());
                         }
